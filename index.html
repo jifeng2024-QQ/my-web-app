@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>数字记忆挑战</title>
 <style>
+* {
+  box-sizing: border-box; /* 全局设置 box-sizing */
+}
 body {
   font-family: Arial, sans-serif;
   text-align: center;
@@ -24,11 +27,52 @@ body {
   margin: 20px 0;
 }
 
-#numberDisplay div, #inputArea div {
+#numberDisplay .row {
   display: flex;
+  justify-content: center; /* 居中对齐 */
+  margin: 0 auto;         /* 水平居中 */
+  flex-wrap: nowrap;      /* 确保一行内显示所有数字 */
+  width: 90%;             /* 整体宽度为屏幕宽度的80% */
+  box-sizing: border-box; /* 确保 padding 和 border 包含在总宽度内 */
+}
+
+#numberDisplay .row span {
+  font-size: 25px;
+  display: inline-flex;   /* 使用flex布局 */
+  flex: 1;               /* 每个数字尽可能均分剩余空间 */
+  align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
+  box-sizing: border-box; /* 确保 padding 和 border 包含在总宽度内 */
+}
+#inputArea .input-row {
+  display: flex;
+  justify-content: center; /* 居中对齐 */
+  margin: 0 auto;          /* 水平居中 */
+  flex-wrap: nowrap;       /* 确保一行内显示所有输入框 */
+  width: 60%;              /* 整体宽度为屏幕宽度的80% */
+  box-sizing: border-box;  /* 确保 padding 和 border 包含在总宽度内 */
+}
+
+#inputArea .input-container {
+  flex: 1;                /* 输入框尽可能均分剩余空间 */
+  height: 30px;
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box; /* 确保 padding 和 border 包含在总宽度内 */
+}
+
+#inputArea .input-container input {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  font-size: 18px;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: #000;
 }
 
 button {
@@ -41,46 +85,35 @@ button {
   display: block;
 }
 
+#inputArea .input-row {
+  width: 100%;
+  margin-bottom: 3px; /* 原来可能是 10px 或其他更大的值 */
+}
+
 #inputArea .input-container {
-  position: relative;
   width: 30px;
   height: 30px;
-  display: inline-block;
+  position: relative;
   margin: 2px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  text-align: center;
 }
 
 #inputArea .input-container input {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
+  align-items: center;
+  justify-content: center;
   font-size: 18px;
   outline: none;
   border: none;
   background: transparent;
-  color: #000; /* 设置文字颜色 */
-  text-align: center; /* 居中文本 */
-}
-
-#numberDisplay {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#numberDisplay .row {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 80vw; /* 限制最大宽度 */
+  color: #000;
 }
 
 #numberDisplay .row span {
-  font-size: 25px; /* 默认字体大小改为30像素 */
+  font-size: 25px;
   display: inline-block;
 }
 
@@ -97,37 +130,36 @@ button {
   color: red;
 }
 
-/* 调整 h1 字体大小 */
 h1 {
-  font-size: 2.2em; /* 你可以根据需要调整这个值 */
-  margin-bottom: 0.2em; /* 控制与 h2 的间距 */
+  font-size: 2.3em;
+  margin-bottom: 0.1em;
 }
 
-/* 修改 h2 样式 */
 h2 {
-  font-size: 1.8em; /* 主标题字体大小 */
-  margin: 0 0 0.5em; /* 调整与副标题的行间距 */
+  font-size: 1.7em;
+  margin: 0 0 0.5em;
+  letter-spacing: 3px;
 }
 
 h2 small {
   display: block;
-  font-size: 0.8em; /* 调整副标题字体大小 */
-  margin-top: 0.05em; /* 更小的行间距 */
-  color: #888; /* 将副标题颜色调整为灰色 */
+  font-size: 0.7em;
+  margin-top: 0.05em;
+  color: #888;
+  font-weight: normal;
+  letter-spacing: 2px;
 }
 
-/* 为“选择行数”后的输入框定义样式 */
 .rows-input {
-  width: 50px; /* 调整宽度 */
-  height: 24px; /* 调整高度 */
-  font-size: 14px; /* 调整字体大小 */
-  text-align: center; /* 文本居中 */
-  padding: 0; /* 移除内边距 */
-  border: 1px solid #ccc; /* 边框样式 */
-  border-radius: 4px; /* 圆角 */
+  width: 50px;
+  height: 24px;
+  font-size: 14px;
+  text-align: center;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-/* 响应式样式 */
 @media (max-width: 600px) {
   button {
     font-size: 16px;
@@ -135,11 +167,10 @@ h2 small {
   }
 
   #numberDisplay span {
-    font-size: 24px; /* 在小屏幕设备上减小字体大小 */
+    font-size: 24px;
   }
 }
 
-/* 分割“回忆时间”到下一行 */
 #result {
   white-space: pre-line;
 }
@@ -149,7 +180,7 @@ h2 small {
 <h1>数字记忆挑战</h1>
 <h2>
   世界记忆大师 邱利军
-  <small>(微：qljcjjy)</small>
+  <small>(微信：qljcjjy)</small>
 </h2>
 <div style="margin-bottom: 20px;">
   <span>每行20个数字</span>
@@ -173,6 +204,7 @@ let numbers = [];
 let memoryStartTime, recallStartTime;
 let memoryTimeSpent = 0;
 let memoryTimerInterval, recallTimerInterval;
+
 const numberDisplay = document.getElementById('numberDisplay');
 const generateButton = document.getElementById('generateNumbers');
 const endMemoryButton = document.getElementById('endMemory');
@@ -200,14 +232,18 @@ function updateTimer(timerType) {
   }
 }
 
-function startMemoryTimer() {
-  memoryStartTime = new Date().getTime();
-  memoryTimerInterval = setInterval(() => updateTimer('memory'), 10);
+function startTimer(timerType) {
+  if (timerType === 'memory') {
+    memoryStartTime = new Date().getTime();
+    memoryTimerInterval = setInterval(() => updateTimer('memory'), 10);
+  } else if (timerType === 'recall') {
+    recallStartTime = new Date().getTime();
+    recallTimerInterval = setInterval(() => updateTimer('recall'), 10);
+  }
 }
 
-function startRecallTimer() {
-  recallStartTime = new Date().getTime();
-  recallTimerInterval = setInterval(() => updateTimer('recall'), 10);
+function stopTimer(timerType) {
+  clearInterval(timerType === 'memory' ? memoryTimerInterval : recallTimerInterval);
 }
 
 function generateNumbers() {
@@ -218,8 +254,8 @@ function generateNumbers() {
   const rows = parseInt(rowsInput.value, 10);
   for (let i = 0; i < rows; i++) {
     let rowDiv = document.createElement('div');
-    rowDiv.classList.add('row'); // 添加类名用于样式控制
-    for (let j = 0; j < 20; j++) { // 每行20个数字
+    rowDiv.classList.add('row');
+    for (let j = 0; j < 20; j++) {
       let number = Math.floor(Math.random() * 10);
       numbers.push(number);
       let numSpan = document.createElement('span');
@@ -230,84 +266,64 @@ function generateNumbers() {
   }
   generateButton.style.display = 'none';
   endMemoryButton.style.display = 'block';
-  startMemoryTimer();
+  startTimer('memory');
 }
 
 function endMemory() {
-  clearInterval(memoryTimerInterval);
+  stopTimer('memory');
   memoryTimeSpent = new Date().getTime() - memoryStartTime;
   endMemoryButton.style.display = 'none';
   submitAnswersButton.style.display = 'block';
   recallTimerDiv.style.display = 'block';
-  startRecallTimer();
-
-  // 清除旧的数字显示
+  startTimer('recall');
   numberDisplay.innerHTML = '';
 
-  const inputRows = rowsInput.value; // 根据选择的行数计算输入格的行数
-  let inputCount = inputRows * 20;
-  let inputContainers = [];
-
-  // 创建输入格并添加到DOM中
+  const inputCount = rowsInput.value * 20;
+  let inputRowDiv;
   for (let i = 0; i < inputCount; i++) {
+    if (i % 10 === 0) {
+      inputRowDiv = document.createElement('div');
+      inputRowDiv.classList.add('input-row');
+    }
+
     let inputContainer = document.createElement('div');
     inputContainer.classList.add('input-container');
-    
     let input = document.createElement('input');
-    input.type = 'text'; // 改为文本类型，以便支持键盘导航
-    input.min = 0; // 最小值为0
-    input.max = 9; // 最大值为9
-    input.pattern = '\\d*'; // 只允许数字
-    input.style.width = '30px'; // 保持宽度一致
+    input.type = 'text';
+    input.min = 0;
+    input.max = 9;
+    input.pattern = '\\d*';
+    input.style.width = '30px';
     input.style.height = '30px';
     input.style.textAlign = 'center';
-    input.id = `input${i}`; // 给每个输入框分配唯一ID
-    
-    // 添加点击事件处理程序，允许点击输入
-    input.addEventListener('click', function() {
-      this.focus();
-      this.select();
-    });
-    
-    // 监听输入框的变化
-    input.addEventListener('input', function(event) {
-      let value = event.target.value.replace(/[^0-9]/g, ''); // 移除非数字字符
+    input.id = `input${i}`;
+
+    input.addEventListener('click', () => input.focus());
+    input.addEventListener('input', event => {
+      let value = event.target.value.replace(/[^0-9]/g, '');
       event.target.value = value;
       moveFocus(event.target);
     });
-
-    // 监听键盘按键事件
-    input.addEventListener('keydown', function(event) {
-      if (event.key === 'Enter' || event.key === 'Tab') {
-        event.preventDefault(); // 阻止默认行为
-        moveFocus(this);
-      } else if (event.key === 'Backspace' || event.key === 'Delete') {
-        event.preventDefault(); // 阻止默认行为
-        this.value = '';
-        moveBackFocus(this);
+    input.addEventListener('keydown', event => {
+      if (['Enter', 'Tab'].includes(event.key)) {
+        event.preventDefault();
+        moveFocus(event.target);
+      } else if (['Backspace', 'Delete'].includes(event.key)) {
+        event.preventDefault();
+        input.value = '';
+        moveBackFocus(event.target);
       }
     });
 
-    inputArea.appendChild(inputContainer);
     inputContainer.appendChild(input);
-    inputContainers.push(inputContainer);
-  }
+    inputRowDiv.appendChild(inputContainer);
 
-  // 自动聚焦到第一个输入框
-  document.getElementById('input0').focus();
-
-  // 添加删除功能
-  function moveBackFocus(currentInput) {
-    let currentIndex = parseInt(currentInput.id.replace('input', ''));
-    let prevIndex = currentIndex - 1;
-    if (prevIndex >= 0) {
-      let prevInput = document.getElementById(`input${prevIndex}`);
-      if (prevInput) {
-        prevInput.focus();
-        prevInput.select(); // 选中输入框中的内容
-      }
+    if (i % 10 === 9 || i === inputCount - 1) {
+      inputArea.appendChild(inputRowDiv);
     }
   }
+
+  document.getElementById('input0').focus();
 }
 
 function moveFocus(currentInput) {
@@ -315,28 +331,34 @@ function moveFocus(currentInput) {
   let nextIndex = currentIndex + 1;
   if (nextIndex < 20 * rowsInput.value) {
     let nextInput = document.getElementById(`input${nextIndex}`);
-    if (nextInput) {
-      nextInput.focus();
-      nextInput.select(); // 选中输入框中的内容
-    }
+    nextInput?.focus()?.select();
   } else {
-    // 如果是最后一个输入框，则不再跳转，而是提示用户提交答案
     submitAnswersButton.focus();
   }
 }
 
-function submitAnswers() {
-  clearInterval(recallTimerInterval);
-  let userNumbers = [];
-  const inputs = document.querySelectorAll('#inputArea .input-container input');
-  inputs.forEach(input => userNumbers.push(input.value === '' ? -1 : parseInt(input.value) || 0));
-  let correct = 0, incorrect = 0;
+function moveBackFocus(currentInput) {
+  let currentIndex = parseInt(currentInput.id.replace('input', ''));
+  let prevIndex = currentIndex - 1;
+  if (prevIndex >= 0) {
+    let prevInput = document.getElementById(`input${prevIndex}`);
+    prevInput?.focus()?.select();
+  }
+}
 
+function submitAnswers() {
+  stopTimer('recall');
+  let userNumbers = Array.from(document.querySelectorAll('#inputArea .input-container input')).map(input => 
+    input.value === '' ? -1 : parseInt(input.value)
+  );
+  let correct = 0, incorrect = 0;
+  let inputs = document.querySelectorAll('#inputArea .input-container input');
+  
   resultDiv.innerHTML = '';
   correctNumbersDiv.innerHTML = '';
   inputs.forEach((input, index) => {
-    const correctNumberSpan = document.createElement('span');
-    correctNumberSpan.textContent = numbers[index].toString();
+    let correctNumberSpan = document.createElement('span');
+    correctNumberSpan.textContent = numbers[index];
     if (userNumbers[index] === -1 || numbers[index] !== userNumbers[index]) {
       incorrect++;
       input.parentElement.style.backgroundColor = 'red';
@@ -345,20 +367,16 @@ function submitAnswers() {
       correct++;
     }
     correctNumbersDiv.appendChild(correctNumberSpan);
-    correctNumbersDiv.appendChild(document.createTextNode(' ')); // 使用一个半角空格
+    correctNumbersDiv.appendChild(document.createTextNode(' '));
 
-    // 每20个数字之后添加一个全角空格来区分不同的数字组
     if ((index + 1) % 20 === 0 && index < numbers.length - 1) {
-      correctNumbersDiv.appendChild(document.createTextNode('　')); // 使用一个全角空格来区分
+      correctNumbersDiv.appendChild(document.createTextNode('　'));
     }
   });
 
-  const recallTime = (new Date().getTime() - recallStartTime) / 1000;
+  let recallTime = (new Date().getTime() - recallStartTime) / 1000;
   resultDiv.textContent = `正确个数: ${correct}, 错误个数: ${incorrect}, 记忆时间: ${memoryTimeSpent / 1000}秒\n回忆时间: ${recallTime.toFixed(2)}秒`;
-
-  // 在提交答案后隐藏 "提交答案" 按钮
-  submitAnswersButton.style.display = 'none';
-
+  submitAnswersButton.style.display = 'none'; 
   restartButton.style.display = 'block';
 }
 
@@ -373,12 +391,11 @@ function restart() {
   correctNumbersDiv.innerHTML = '';
   memoryTimerDiv.textContent = '记忆时间: 00:00';
   recallTimerDiv.textContent = '回忆时间: 00:00';
-  clearInterval(memoryTimerInterval);
-  clearInterval(recallTimerInterval);
+  stopTimer('memory');
+  stopTimer('recall');
   memoryTimeSpent = 0;
 }
 
-// 添加按钮点击事件监听器
 generateButton.addEventListener('click', generateNumbers);
 endMemoryButton.addEventListener('click', endMemory);
 submitAnswersButton.addEventListener('click', submitAnswers);
